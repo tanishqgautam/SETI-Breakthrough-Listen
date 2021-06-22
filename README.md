@@ -39,7 +39,7 @@ In this competition you are tasked with looking for technosignature signals in c
 
 I have implemented a transfer learning approach using a [Swin Transformer](https://arxiv.org/abs/2103.14030).
 
-![img](https://raw.githubusercontent.com/microsoft/Swin-Transformer/master/figures/teaser.png)
+![img](https://p1.pstatp.com/origin/pgc-image/d1536955bfea41c091a8d94eaf0737c6.png?from=pc)
 
 Other techniques implemented are:
 
@@ -54,13 +54,13 @@ Other techniques implemented are:
 
 • GRADIENT SCALING - If the forward pass for a particular op has float16 inputs, the backward pass for that op will produce float16 gradients. Gradient values with small magnitudes may not be representable in float16. These values will flush to zero (“underflow”), so the update for the corresponding parameters will be lost. To prevent underflow, “gradient scaling” multiplies the network’s loss(es) by a scale factor and invokes a backward pass on the scaled loss(es). Gradients flowing backward through the network are then scaled by the same factor. In other words, gradient values have a larger magnitude, so they don’t flush to zero.
 
-• WEIGHTED RANDOM SAMPLER - Samples elements from [0 ,.., len(weights)-1] with given probabilities (weights).
+• WEIGHTED RANDOM SAMPLER - Samples elements from [0 ,.., len(weights)-1] with given probabilities (weights). Our dataset is very imbalanced and hence this techniques overcomes that.
+
+<img src="assets/dataset.png" alt="Picture for Representation"><br>
 
 • TEST TIME AUGMENTATION - Similar to what Data Augmentation is doing to the training set, the purpose of Test Time Augmentation is to perform random modifications to the test images. Thus, instead of showing the regular, “clean” images, only once to the trained model, we will show it the augmented images several times. We will then average the predictions of each corresponding image and take that as our final guess.
 The reason why it works is that, by averaging our predictions, on randomly modified images, we are also averaging the errors. The error can be big in a single vector, leading to a wrong answer, but when averaged, only the correct answer stand out.  
 
-
-![](https://preview.ibb.co/kH61v0/pipeline.png)
 
 • ACCELERATE BY HUGGINGFACE 🤗 - Accelerate provides an easy API to make your scripts run with mixed precision and on any kind of distributed setting (multi-GPUs, TPUs etc.) while still letting you write your own training loop. The same code can then runs seamlessly on your local machine for debugging or your training environment.
 In 5 Lines of code we can run our scripts on any distributed setting!
