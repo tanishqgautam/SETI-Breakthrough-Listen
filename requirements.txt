@@ -1,0 +1,10 @@
+accelerate
+torch
+torchvision
+albumentations
+timm
+wandb
+tqdm
+pandas
+numpy
+scikit-learn
