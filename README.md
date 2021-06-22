@@ -43,29 +43,29 @@ I have implemented a transfer learning approach using a [Swin Transformer](https
 
 Other techniques implemented are:
 
-• CUTMIX - CutMix is an image data augmentation strategy. Instead of simply removing pixels as in Cutout, we replace the removed regions with a patch from another image. The ground truth labels are also mixed proportionally to the number of pixels of combined images. The added patches further enhance localization ability by requiring the model to identify the object from a partial view.  
+• [CUTMIX](https://paperswithcode.com/paper/cutmix-regularization-strategy-to-train) - CutMix is an image data augmentation strategy. Instead of simply removing pixels as in Cutout, we replace the removed regions with a patch from another image. The ground truth labels are also mixed proportionally to the number of pixels of combined images. The added patches further enhance localization ability by requiring the model to identify the object from a partial view.  
 
 
 ![](https://miro.medium.com/max/4176/1*IR3uTsclxKdzKIXDlTiVgg.png)
 
-• AMP - AMP provides convenience methods for mixed precision, where some operations use the torch.float32 (float) datatype and other operations use torch.float16 (half).
+• [AMP](https://pytorch.org/docs/stable/amp.html) - AMP provides convenience methods for mixed precision, where some operations use the torch.float32 (float) datatype and other operations use torch.float16 (half).
 
-• AUTOCASTING - Instances of autocast serve as context managers or decorators that allow regions of your script to run in mixed precision. autocast should wrap only the forward pass(es) of your network, including the loss computation(s). Backward passes under autocast are not recommended.
+• [AUTOCASTING](https://pytorch.org/docs/stable/amp.html#autocasting) - Instances of autocast serve as context managers or decorators that allow regions of your script to run in mixed precision. autocast should wrap only the forward pass(es) of your network, including the loss computation(s). Backward passes under autocast are not recommended.
 
-• GRADIENT SCALING - If the forward pass for a particular op has float16 inputs, the backward pass for that op will produce float16 gradients. Gradient values with small magnitudes may not be representable in float16. These values will flush to zero (“underflow”), so the update for the corresponding parameters will be lost. To prevent underflow, “gradient scaling” multiplies the network’s loss(es) by a scale factor and invokes a backward pass on the scaled loss(es). Gradients flowing backward through the network are then scaled by the same factor. In other words, gradient values have a larger magnitude, so they don’t flush to zero.
+• [GRADIENT SCALING](https://pytorch.org/docs/stable/amp.html#gradient-scaling) - If the forward pass for a particular op has float16 inputs, the backward pass for that op will produce float16 gradients. Gradient values with small magnitudes may not be representable in float16. These values will flush to zero (“underflow”), so the update for the corresponding parameters will be lost. To prevent underflow, “gradient scaling” multiplies the network’s loss(es) by a scale factor and invokes a backward pass on the scaled loss(es). Gradients flowing backward through the network are then scaled by the same factor. In other words, gradient values have a larger magnitude, so they don’t flush to zero.
 
-• WEIGHTED RANDOM SAMPLER - Samples elements from [0 ,.., len(weights)-1] with given probabilities (weights). Our dataset is very imbalanced and hence this techniques overcomes that.
+• [WEIGHTED RANDOM SAMPLER](https://pytorch.org/docs/stable/data.html) - Samples elements from [0 ,.., len(weights)-1] with given probabilities (weights). Our dataset is very imbalanced and hence this techniques overcomes that.
 
 <img src="assets/dataset.png" alt="Picture for Representation"><br>
 
-• TEST TIME AUGMENTATION - Similar to what Data Augmentation is doing to the training set, the purpose of Test Time Augmentation is to perform random modifications to the test images. Thus, instead of showing the regular, “clean” images, only once to the trained model, we will show it the augmented images several times. We will then average the predictions of each corresponding image and take that as our final guess.
+• [TEST TIME AUGMENTATION](https://arxiv.org/abs/2010.11422#:~:text=At%20the%20testing%20phase%2C%20simple,transformations%20for%20a%20test%20input.) - Similar to what Data Augmentation is doing to the training set, the purpose of Test Time Augmentation is to perform random modifications to the test images. Thus, instead of showing the regular, “clean” images, only once to the trained model, we will show it the augmented images several times. We will then average the predictions of each corresponding image and take that as our final guess.
 The reason why it works is that, by averaging our predictions, on randomly modified images, we are also averaging the errors. The error can be big in a single vector, leading to a wrong answer, but when averaged, only the correct answer stand out.  
 
 
-• ACCELERATE BY HUGGINGFACE 🤗 - Accelerate provides an easy API to make your scripts run with mixed precision and on any kind of distributed setting (multi-GPUs, TPUs etc.) while still letting you write your own training loop. The same code can then runs seamlessly on your local machine for debugging or your training environment.
+• [ACCELERATE BY HUGGINGFACE](https://huggingface.co/docs/accelerate/) 🤗 - Accelerate provides an easy API to make your scripts run with mixed precision and on any kind of distributed setting (multi-GPUs, TPUs etc.) while still letting you write your own training loop. The same code can then runs seamlessly on your local machine for debugging or your training environment.
 In 5 Lines of code we can run our scripts on any distributed setting!
 
-• WEIGHTS AND BIASES - Wandb is a developer tool for companies turn deep learning research projects into deployed software by helping teams track their models, visualize model performance and easily automate training and improving models.
+• [WEIGHTS AND BIASES](https://wandb.ai/site) - Wandb is a developer tool for companies turn deep learning research projects into deployed software by helping teams track their models, visualize model performance and easily automate training and improving models.
 We will use their tools to log hyperparameters and output metrics from your runs, then visualize and compare results and quickly share findings with your colleagues.
 
 ## Training the Model
